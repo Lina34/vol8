@@ -13,6 +13,8 @@ function interpreter() {
   this.selectText = null; // 選択肢のテキスト
   this.select1 = null;    // 選択肢1
   this.select2 = null;    // 選択肢2
+  this.select3 = null;    // 選択肢2
+  this.select4 = null;    // 選択肢2
   this.next = null;       // 次のシーン名
   this.variables = [];    // 変数
   this.scene = null;      // シーン
@@ -90,7 +92,7 @@ interpreter.prototype.セリフ = function(args) {
   if (args[0]==undefined) args[0] = "";
   if (args[1]==undefined) args[1] = "";
   var name = new Label(args[0]);
-  name.font = "16px monospace";
+  name.font = "12px monospace";
   name.color = "rgb(255, 255, 255)";
   name.backgroundColor = "rgba(0, 0, 0, 0.6)";
   name.y = 320 - 32 * 3;
@@ -100,7 +102,7 @@ interpreter.prototype.セリフ = function(args) {
   this.name = name;
 
   var text = new Label(args[1]);
-  text.font  = "16px monospace";
+  text.font  = "12px monospace";
   text.color = "rgb(255, 255, 255)";
   text.y     = 320 - 32 * 2;
   text.width = 320;
@@ -124,7 +126,7 @@ interpreter.prototype.セリフクリア = function() {
 interpreter.prototype.ジャンプ = function(args) {
   var self = this;
   var next = new Label('【次へ】');
-  next.font  = "16px monospace";
+  next.font  = "12px monospace";
   next.color = "rgb(255,200,0)";
   next.x     = 320 - 64;
   next.y     = 320 - 32;
@@ -151,7 +153,7 @@ interpreter.prototype.オートジャンプ = function(arg) {
 interpreter.prototype.選択肢 = function(args) {
   var self = this;
   var text = new Label(args[0]);
-  text.font  = "16px monospace";
+  text.font  = "12px monospace";
   text.color = "rgb(255,255,255)";
   text.backgroundColor = "rgba(0,0,0,0.6)";
   text.y     = 320 - 32*3;
@@ -161,10 +163,11 @@ interpreter.prototype.選択肢 = function(args) {
   this.selectText = text;
 
   var select1 = new Label('【'+args[1]+'】');
-  select1.font  = "16px monospace";
+  select1.font  = "12px monospace";
   select1.color = "rgb(255,125,0)";
-  select1.y     = 320 - 32*2;
-  select1.width = 320;
+  select1.y     = 320 - 32;
+  select1.x     = 320 - 16*10;
+  select1.width = 100;
   textLayer.addChild(select1);
   select1.addEventListener(Event.TOUCH_START, function(e) {
     self.選択肢クリア();
@@ -173,9 +176,11 @@ interpreter.prototype.選択肢 = function(args) {
   this.select1 = select1;
 
   var select2 = new Label('【'+args[3]+'】');
-  select2.font  = "16px monospace";
+  select2.font  = "12px monospace";
   select2.color = "rgb(255,125,0)";
-  select2.y     = 320 - 32;
+  select2.y     = 320 - 32 * 2;
+  select2.x     = 320 - 16*10;
+
   select2.width = 320;
   textLayer.addChild(select2);
   select2.addEventListener(Event.TOUCH_START, function(e) {
@@ -183,6 +188,41 @@ interpreter.prototype.選択肢 = function(args) {
     exec(eval(args[4]));
   });
   this.select2 = select2;
+
+
+
+
+
+
+
+  var select3 = new Label('【'+args[5]+'】');
+  select3.font  = "12px monospace";
+  select3.color = "rgb(255,125,0)";
+  select3.y     = 320 - 16*4;
+  select3.x     = 20;
+  textLayer.addChild(select3);
+  select3.addEventListener(Event.TOUCH_START, function(e) {
+    self.選択肢クリア();
+    exec(eval(args[6]));
+  });
+  this.select3 = select3;
+
+  var select4 = new Label('【'+args[7]+'】');
+  select4.font  = "12px monospace";
+  select4.color = "rgb(255,125,0)";
+  select4.y     = 320 - 16*2;
+  select4.x     = 20;
+  textLayer.addChild(select4);
+  select4.addEventListener(Event.TOUCH_START, function(e) {
+    self.選択肢クリア();
+    exec(eval(args[8]));
+  });
+  this.select4 = select4;
+
+
+
+
+
 
 }
 
@@ -192,10 +232,15 @@ interpreter.prototype.選択肢クリア = function() {
   textLayer.removeChild(this.selectText);
   textLayer.removeChild(this.select1);
   textLayer.removeChild(this.select2);
+  textLayer.removeChild(this.select3);
+  textLayer.removeChild(this.select4);
   delete this.selectText;
   delete this.select1;
   delete this.select2;
+  delete this.select3;
+  delete this.select4;
 }
+
 
 // 背景画像を削除するコマンド(メソッド)
 // '背景クリア': null
@@ -278,8 +323,7 @@ window.onload = function() {
 
   coer = new Core(320, 320);
   coer.fps = 16;
-  coer.preload(images,"../Vol8/music/test.mp3");
-  coer.bgm = Sound.load("../Vol8/music/test.mp3");
+  coer.preload(images);
 
 
 
@@ -318,8 +362,8 @@ window.onload = function() {
 
   coer.onload = function() {
 
-    coer.bgm.volume = 0.5;
-    coer.bgm.play();
+    // coer.bgm.volume = 0.5;
+    // coer.bgm.play();
 
 
 
