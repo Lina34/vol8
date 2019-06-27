@@ -1,5 +1,6 @@
-enchant();
 
+
+enchant();
  // コンストラクタ
 function interpreter() {
   // プロパティ
@@ -19,6 +20,11 @@ function interpreter() {
   this.variables = [];    // 変数
   this.scene = null;      // シーン
 };
+
+
+
+
+
 
 
 // 音楽を鳴らす
@@ -86,9 +92,17 @@ interpreter.prototype.回転 = function(args) {
   this.chara[args[0]].rotation = args[1];
 }
 
+
+
+
+
+
+
 // セリフを表示するコマンド(メソッド)
 // 'セリフ': ['名前ラベル', 'テキスト']
 interpreter.prototype.セリフ = function(args) {
+  
+
   if (args[0]==undefined) args[0] = "";
   if (args[1]==undefined) args[1] = "";
   var name = new Label(args[0]);
@@ -146,11 +160,15 @@ interpreter.prototype.オートジャンプ = function(arg) {
   exec(eval(arg));
 }
 
+
+
+
+
 // 選択肢を表示するコマンド(メソッド)
 // '選択肢': ['テキスト', '選択肢1', 'シーン1', '選択肢2' , 'シーン2']
 // 「選択肢1」を選択すると「シーン名1」に指定したシーンにジャンプ
 // 「選択肢2」を選択すると「シーン名2」に指定したシーンにジャンプ
-interpreter.prototype.選択肢 = function(args) {
+interpreter.prototype.選択肢A = function(args) {
   var self = this;
   var text = new Label(args[0]);
   text.font  = "12px monospace";
@@ -164,27 +182,123 @@ interpreter.prototype.選択肢 = function(args) {
 
   var select1 = new Label('【'+args[1]+'】');
   select1.font  = "12px monospace";
-  select1.color = "rgb(255,125,0)";
+  select1.color = "rgb(255,0,0)";
   select1.y     = 320 - 32;
-  select1.x     = 320 - 16*10;
   select1.width = 100;
   textLayer.addChild(select1);
   select1.addEventListener(Event.TOUCH_START, function(e) {
-    self.選択肢クリア();
+    self.選択肢Aクリア();
     exec(eval(args[2]));
   });
   this.select1 = select1;
 
   var select2 = new Label('【'+args[3]+'】');
   select2.font  = "12px monospace";
-  select2.color = "rgb(255,125,0)";
+  select2.color = "rgb(255,0,0)";
+  select2.y     = 320 - 32 * 2;
+  select2.width = 320;
+  textLayer.addChild(select2);
+  select2.addEventListener(Event.TOUCH_START, function(e) {
+    self.選択肢Aクリア();
+    exec(eval(args[4]));
+  });
+  this.select2 = select2;
+
+
+
+
+
+
+
+  
+
+
+
+
+}
+
+// 選択肢をクリアするコマンド(メソッド)
+// '選択肢クリア': null
+interpreter.prototype.選択肢Aクリア = function() {
+  textLayer.removeChild(this.selectText);
+  textLayer.removeChild(this.select1);
+  textLayer.removeChild(this.select2);
+
+  delete this.selectText;
+  delete this.select1;
+  delete this.select2;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 選択肢を表示するコマンド(メソッド)
+// '選択肢': ['テキスト', '選択肢1', 'シーン1', '選択肢2' , 'シーン2']
+// 「選択肢1」を選択すると「シーン名1」に指定したシーンにジャンプ
+// 「選択肢2」を選択すると「シーン名2」に指定したシーンにジャンプ
+interpreter.prototype.選択肢B = function(args) {
+  var self = this;
+  var text = new Label(args[0]);
+  text.font  = "12px monospace";
+  text.color = "rgb(255,255,255)";
+  text.backgroundColor = "rgba(0,0,0,0.6)";
+  text.y     = 320 - 32*3;
+  text.width = 320;
+  text.height = 32 * 3;
+  textLayer.addChild(text);
+  this.selectText = text;
+
+  var select1 = new Label('【'+args[1]+'】');
+  select1.font  = "12px monospace";
+  select1.color = "rgb(255,0,0)";
+  select1.y     = 320 - 32;
+  select1.x     = 320 - 16*10;
+  select1.width = 100;
+  textLayer.addChild(select1);
+  select1.addEventListener(Event.TOUCH_START, function(e) {
+    self.選択肢Bクリア();
+    exec(eval(args[2]));
+  });
+  this.select1 = select1;
+
+  var select2 = new Label('【'+args[3]+'】');
+  select2.font  = "12px monospace";
+  select2.color = "rgb(255,0,0)";
   select2.y     = 320 - 32 * 2;
   select2.x     = 320 - 16*10;
 
   select2.width = 320;
   textLayer.addChild(select2);
   select2.addEventListener(Event.TOUCH_START, function(e) {
-    self.選択肢クリア();
+    self.選択肢Bクリア();
     exec(eval(args[4]));
   });
   this.select2 = select2;
@@ -197,24 +311,24 @@ interpreter.prototype.選択肢 = function(args) {
 
   var select3 = new Label('【'+args[5]+'】');
   select3.font  = "12px monospace";
-  select3.color = "rgb(255,125,0)";
+  select3.color = "rgb(255,0,0)";
   select3.y     = 320 - 16*4;
   select3.x     = 20;
   textLayer.addChild(select3);
   select3.addEventListener(Event.TOUCH_START, function(e) {
-    self.選択肢クリア();
+    self.選択肢Bクリア();
     exec(eval(args[6]));
   });
   this.select3 = select3;
 
   var select4 = new Label('【'+args[7]+'】');
   select4.font  = "12px monospace";
-  select4.color = "rgb(255,125,0)";
+  select4.color = "rgb(255,0,0)";
   select4.y     = 320 - 16*2;
   select4.x     = 20;
   textLayer.addChild(select4);
   select4.addEventListener(Event.TOUCH_START, function(e) {
-    self.選択肢クリア();
+    self.選択肢Bクリア();
     exec(eval(args[8]));
   });
   this.select4 = select4;
@@ -228,7 +342,7 @@ interpreter.prototype.選択肢 = function(args) {
 
 // 選択肢をクリアするコマンド(メソッド)
 // '選択肢クリア': null
-interpreter.prototype.選択肢クリア = function() {
+interpreter.prototype.選択肢Bクリア = function() {
   textLayer.removeChild(this.selectText);
   textLayer.removeChild(this.select1);
   textLayer.removeChild(this.select2);
@@ -321,7 +435,7 @@ window.onload = function() {
   // 「interpreter」オブジェクトを生成する
   interpreter = new interpreter();
 
-  coer = new Core(320, 320);
+  coer = new Core(320, 340);
   coer.fps = 16;
   coer.preload(images);
 
@@ -379,6 +493,7 @@ window.onload = function() {
     if (save.scene == null) save.scene = 'start';
     if (save.variables == null) save.variables = [];
     
+    
     // データ復元
     for (var i in save.variables) {
       interpreter.variables[save.variables[i][0]] = save.variables[i][1] 
@@ -397,7 +512,7 @@ window.onload = function() {
  
     // セーブラベルを作成する
     var savelabel = new MutableText(16, -100);
-    savelabel.text = 'SAVE'
+    savelabel.text = 'SAVE';
     // セーブラベルの「touchstart」イベントリスナ
     savelabel.addEventListener('touchstart', function(e) {
       this.backgroundColor = '#F0F0F0';
@@ -407,10 +522,6 @@ window.onload = function() {
     // セーブラベルの「touchend」イベントリスナ
     savelabel.addEventListener('touchend', function(e) {
       this.backgroundColor = '';
-
-
-
-
       var save = coer.memory.player.data;
       // シーン名をメモリに書き込む
       save.scene = interpreter.scene;
@@ -423,6 +534,7 @@ window.onload = function() {
       // 保存を実行する
       coer.memory.update();
     });
+
     savelabel.addEventListener('enterframe', function(e) {
       this.y =  0; // セーブラベルを見える位置へ
     });
@@ -433,3 +545,4 @@ window.onload = function() {
   coer.start();
 
 }
+
